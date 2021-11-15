@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace Microservice.Models
 {
-    public class Truck
+    public class Truck : GPS
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public int TruckId { get; set; }
+        public string Numberplate { get; set; }
+        public string CurrentLocation { get; set; }
     }
 }
