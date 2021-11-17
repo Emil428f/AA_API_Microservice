@@ -1,31 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Repository;
-using System;
+﻿using Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebAPI.Controller.Generic
 {
     public abstract class ParentController<TModel, TRepository> : ControllerBase where TModel : class where TRepository : IRepository<TModel>
     {
-        protected readonly TRepository _repository;
+        protected readonly TRepository repository;
 
         public ParentController(TRepository repository)
         {
-            this._repository = repository;
+            this.repository = repository;
         }
 
         [HttpGet]
-        public IEnumerable<TModel> Get()
+        public virtual IEnumerable<TModel> GetAll()
         {
-            return _repository.RetrieveAll();
+            return repository.GetAll();
+        }
+
+        [HttpGet]
+        public virtual TModel Get(int id)
+        {
+            return repository.Get(id);
         }
 
         [HttpPost]
-        public void Add([FromBody] TModel item)
+        public virtual void Add([FromBody] TModel item)
         {
-            _repository.Add(item);
-        } 
+            repository.Add(item);
+        }
+
+        [HttpDelete]
+        public virtual void Remove(TModel item)
+        {
+            repository.Remove(item);
+        }
     }
 }

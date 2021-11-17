@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Models;
 
-namespace EntityFramework.Context
+namespace Context
 {
     public class ApplicationDbContext : DbContext
     {
@@ -10,6 +11,7 @@ namespace EntityFramework.Context
         }
 
         public DbSet<Gps> Gps { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

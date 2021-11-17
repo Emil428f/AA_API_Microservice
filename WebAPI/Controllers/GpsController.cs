@@ -1,8 +1,8 @@
-﻿using EntityFramework;
-using Model;
+﻿using Models;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Controller.Generic;
 using System.Collections.Generic;
+using Repositories;
 
 namespace WebAPI.Controllers
 {
@@ -15,11 +15,30 @@ namespace WebAPI.Controllers
 
         }
 
+        [HttpGet]
+        public override IEnumerable<Gps> GetAll()
+        {
+            return repository.GetAll();
+        }
+
         [Route("{id}")]
         [HttpGet]
-        public IEnumerable<Gps> ById(int id)
+        public override Gps Get(int id)
         {
-            return base._repository.RetrieveGpsById(id);
+            return repository.Get(id);
+        }
+
+        [HttpPost]
+        public override void Add([FromBody] Gps item)
+        {
+            repository.Add(item);
+        }
+
+        [Route("{id}")]
+        [HttpDelete]
+        public override void Remove(Gps item)
+        {
+            repository.Remove(item);
         }
     }
 }
