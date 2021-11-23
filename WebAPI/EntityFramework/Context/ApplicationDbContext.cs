@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Models;
+using WebAPI.Models;
 
-namespace Context
+namespace WebAPI.EntityFramework.Context
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Gps> Gps { get; set; }
 
@@ -16,6 +13,7 @@ namespace Context
         {
             base.OnConfiguring(optionsBuilder);
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
