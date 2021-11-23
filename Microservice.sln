@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{467599A7-B4EA-411D-BB2C-CA711B551BF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{ACD21693-AF89-4594-9727-54A70A3EA9EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{ACD21693-AF89-4594-9727-54A70A3EA9EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GpsRepositoryTest", "GpsControllerTest\GpsRepositoryTest.csproj", "{A2FADB88-F134-4067-BAF4-0E2DB6F126DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{ACD21693-AF89-4594-9727-54A70A3EA9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACD21693-AF89-4594-9727-54A70A3EA9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACD21693-AF89-4594-9727-54A70A3EA9EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2FADB88-F134-4067-BAF4-0E2DB6F126DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2FADB88-F134-4067-BAF4-0E2DB6F126DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2FADB88-F134-4067-BAF4-0E2DB6F126DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2FADB88-F134-4067-BAF4-0E2DB6F126DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
