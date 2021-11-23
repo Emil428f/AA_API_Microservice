@@ -11,7 +11,20 @@ namespace WebAPI.Controllers
     {
         public GpsController(GpsRepository repository) : base(repository)
         {
+
+            
+
         }
 
+
+        //[HttpGet("Something")]
+        //public string getsome()
+        //{
+        //    System.Diagnostics.Debug.WriteLine("Hej verden !");
+
+        //    System.Diagnostics.Debug.WriteLine("Hej verden !");
+
+        //    return "Hello World";
+        //}
     }
 }

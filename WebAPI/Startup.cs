@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using WebAPI.EntityFramework.Context;
 using WebAPI.EntityFramework.Repositories;
 using System.Net;
+using WebAPI.Controllers;
 
 namespace WebAPI
 {
@@ -23,6 +24,9 @@ namespace WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddControllers()
+                .AddApplicationPart(typeof(GpsController).Assembly);
             services.Configure<ForwardedHeadersOptions>(options => 
             { 
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; 
@@ -32,11 +36,11 @@ namespace WebAPI
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
             services.AddDbContext<ApplicationDbContext>(options => {options.UseSqlServer(connectionString);});
             services.AddScoped<GpsRepository>();
-            services.AddHttpsRedirection(options =>
-            {
-                options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
-                options.HttpsPort = 5001;
-            });
+            //services.AddHttpsRedirection(options =>
+            //{
+            //    options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+            //    options.HttpsPort = 5001;
+            //});
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AA_Microservice", Version = "v1" });
@@ -53,6 +57,7 @@ namespace WebAPI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             app.UseForwardedHeaders();
             if ( env.IsDevelopment() )
             {
@@ -66,11 +71,18 @@ namespace WebAPI
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
