@@ -9,7 +9,7 @@ namespace WebAPI.EntityFramework.Repositories
 {
     public class GpsRepository : GenericRepository<Gps>, IGpsRepository
     {
-        public ApplicationDbContext ApplicationDbContext
+        public IApplicationDbContext ApplicationDbContext
         { 
             get { return _databaseContext as ApplicationDbContext; }
         }
