@@ -31,10 +31,10 @@ namespace WebAPI
             { 
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; 
             });
-            string connectionString = Configuration.GetSection("ApplicationDbContextConnectionString").GetSection("DefaultConnection").Value;
-            SetMigrate(connectionString);
+            //string connectionString = Configuration.GetSection("ApplicationDbContextConnectionString").GetSection("DefaultConnection").Value;
+            //SetMigrate(connectionString);
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
-            services.AddDbContext<ApplicationDbContext>(options => {options.UseSqlServer(connectionString);});
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("InMemoryContext")));
             services.AddScoped<GpsRepository>();
             //services.AddHttpsRedirection(options =>
             //{
@@ -47,13 +47,13 @@ namespace WebAPI
             });
         }
 
-        public void SetMigrate(string connectionString)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
-            using var context = new ApplicationDbContext(optionsBuilder.Options);
-            context.Database.Migrate();
-        }
+        //public void SetMigrate(string connectionString)
+        //{
+        //    var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+        //    optionsBuilder.UseSqlServer(connectionString);
+        //    using var context = new ApplicationDbContext(optionsBuilder.Options);
+        //    context.Database.Migrate();
+        //}
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
