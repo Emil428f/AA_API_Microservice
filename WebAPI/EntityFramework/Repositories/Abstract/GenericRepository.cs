@@ -1,19 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using WebAPI.Data;
+using WebAPI.EntityFramework.Context;
 using WebAPI.Interfaces.Base;
 
 namespace WebAPI.EntityFramework.Repositories.Abstract
 {
     public abstract class GenericRepository<TModel> : IGenericRepository<TModel> where TModel : class
     {
-        protected readonly DbContext _databaseContext;
+        protected readonly ApplicationDbContext _databaseContext;
         protected readonly DbSet<TModel> _dbSet;
 
-        public GenericRepository(DbContext context)
+        public GenericRepository(ApplicationDbContext context)
         {
             this._databaseContext = context;
-            this._dbSet = _databaseContext.Set<TModel>();
+            DBInitializer init = new DBInitializer();
+            //this._dbSet = _databaseContext.Set<TModel>();
+            init.Initialize(this._databaseContext);
         }
 
         public void Create(TModel obj)

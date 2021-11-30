@@ -16,7 +16,8 @@ namespace WebAPI.EntityFramework.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            //base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Gps>().ToTable("Gps");
         }
     }
 }

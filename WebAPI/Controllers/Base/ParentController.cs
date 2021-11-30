@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using WebAPI.Data;
 using WebAPI.Interfaces.Base;
 
 namespace WebAPI.Controllers.Base
