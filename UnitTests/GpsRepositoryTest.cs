@@ -1,16 +1,12 @@
-using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using WebAPI.EntityFramework.Context;
-using WebAPI.EntityFramework.Repositories;
-using WebAPI.Interfaces;
-using WebAPI.Interfaces.Base;
-using WebAPI.Models;
+using FluentAssertions;
+using System;
 using Xunit;
+using WebAPI.Interfaces;
+using WebAPI.Models;
 
-namespace UnitTest
+namespace UnitTests
 {
-    [TestClass]
     public class GpsRepositoryTest
     {
         public Mock<IGps> expectedGpsMock = new Mock<IGps>();
@@ -21,6 +17,8 @@ namespace UnitTest
             expectedGpsMock = new Mock<IGps>();
             gpsRepoMock = new Mock<IGpsRepository>();
         }
+
+        [Fact]
         public void Dispose()
         {
             expectedGpsMock = null;
@@ -36,13 +34,12 @@ namespace UnitTest
             expectedGpsMock.SetupGet(mock => mock.Id).Returns(1);
             expectedGpsMock.SetupGet(mock => mock.Coordinates).Returns("50;30");
 
-            gpsRepoMock.Setup(repo => repo.GetGpsByTruckId(1)).Returns(new Gps(){ Id = 1, Coordinates = "50;30" });
+            gpsRepoMock.Setup(repo => repo.GetGpsByTruckId(1)).Returns(new Gps() { Id = 1, Coordinates = "50;30" });
 
             //act
             IGps result = gpsRepoMock.Object.GetGpsByTruckId(1);
 
             //assert
-            Assert.IsTrue(true);
             result.Should().BeEquivalentTo(expectedGpsMock.Object, options => options.Including(i => i.Id).Including(c => c.Coordinates));
         }
         // almindelig negative fact
