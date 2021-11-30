@@ -6,7 +6,7 @@ namespace WebAPI.Interfaces
 {
     public interface IGpsRepository : IGenericRepository<Gps>
     {
-        Gps GetGpsByTruckId(int id);
+        IGps GetGpsByTruckId(int id);
         //IEnumerable<Gps> GetGpsByTrailerId();
     }
 }

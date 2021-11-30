@@ -16,7 +16,7 @@ namespace WebAPI.EntityFramework.Repositories
 
         public GpsRepository(ApplicationDbContext context) :base(context) {}
 
-        public Gps GetGpsByTruckId(int id)
+        public IGps GetGpsByTruckId(int id)
         {
             throw new System.NotImplementedException();
         }
