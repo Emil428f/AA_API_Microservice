@@ -27,12 +27,12 @@ namespace WebAPI.EntityFramework.Repositories.Abstract
             _databaseContext.Set<TModel>().Remove(entityExists);
         }
 
-        public IEnumerable<TModel> GetAll()
+        public virtual IEnumerable<TModel> GetAll()
         {
             return _databaseContext.Set<TModel>().ToList();
         }
 
-        public TModel GetById(int id)
+        public virtual TModel GetById(int id)
         {
             return _databaseContext.Set<TModel>().Find(id);
         }

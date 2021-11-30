@@ -1,31 +1,45 @@
-using Microsoft.AspNetCore.Http;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Threading.Tasks;
-using WebAPI.Controllers;
+using WebAPI.EntityFramework.Context;
 using WebAPI.EntityFramework.Repositories;
 using WebAPI.Models;
-using Xunit;
 
 namespace UnitTest
 {
-    //[TestClass]
-    //public class GPSControllerTest
-    //{
-    //    [Fact]
-    //    public async Task GpsController_Get_Should_ReturnSuccessCode()
-    //    {
-    //        var mockRepo = new Mock<GpsRepository>();
-    //        mockRepo.Setup(repo => repo.GetAll()).
+    [TestClass]
+    public class GPSControllerTest
+    {
+        [TestMethod]
+        public void GpsController_Inherrited_Methods_From_Parent()
+        {
+            //var gpsId = 40000;
+            //var expectedCoordinate = "onetwothree";
+            //var gps = new Gps() { Id = gpsId, Coordinates = expectedCoordinate };
 
-    //        var controller = new GpsController(mockRepo.Object);
+            //var gpsRepository = new Mock<GpsRepository>();
+            //gpsRepository.Setup(o => o.GetById(gpsId)).Returns(gps).Verifiable();
 
-    //        Gps gpsObject = new Gps();
+            //var actual = gpsRepository.Object.GetById(gpsId);
 
-    //        var repo = new Mock<GpsRepository>();
-    //        var controller = new Mock<GpsController>(repo);
+            //gpsRepository.Verify();
+            //actual.Should().BeOfType<Gps>();
 
-    //        controller.Setup(repo => repo.Get(40000)).Returns(gpsObject);
-    //    }
-    //}
+            //var contextMock = new Mock<ApplicationDbContext>();
+            //var gpsRepoMock = new Mock<GpsRepository>();
+            //contextMock.Setup(o => o.Gps.Find(40000)).Verifiable();
+
+            //var actual = gpsRepoMock.Object.ApplicationDbContext.Gps.Find(40000);
+
+            //contextMock.Verify();
+            //actual.Should().BeOfType<Gps>();
+
+            var gpsMock = new Mock<Gps>();
+            var gpsRepoMock = new Mock<GpsRepository>();
+
+            gpsRepoMock.Setup(repo => repo.GetById(40000)).Returns(gpsMock.Object);
+
+            gpsRepoMock.Verify();
+        }
+    }
 }
