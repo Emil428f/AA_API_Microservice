@@ -100,7 +100,7 @@ namespace UnitTests
             //Arrange
             //setup context
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SemesterProject_Microservice;Trusted_Connection=True;MultipleActiveResultSets=true");
+            optionsBuilder.UseInMemoryDatabase("Server=(localdb)\\mssqllocaldb;Database=SemesterProject_Microservice;Trusted_Connection=True;MultipleActiveResultSets=true");
             var _dbContext = new ApplicationDbContext(optionsBuilder.Options);
 
             GpsRepository gpsRepository = new(_dbContext);

@@ -11,6 +11,7 @@ using WebAPI.EntityFramework.Repositories;
 using System.Net;
 using WebAPI.Controllers;
 using WebAPI.Interfaces;
+using Microsoft.EntityFrameworkCore.InMemory;
 
 namespace WebAPI
 {
@@ -35,7 +36,7 @@ namespace WebAPI
             //string connectionString = Configuration.GetSection("ApplicationDbContextConnectionString").GetSection("DefaultConnection").Value;
             //SetMigrate(connectionString);
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("InMemoryContext")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase(Configuration.GetConnectionString("InMemoryContext")));
             services.AddScoped<GpsRepository>();
             //services.AddHttpsRedirection(options =>
             //{
