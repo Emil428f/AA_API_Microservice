@@ -94,23 +94,23 @@ namespace UnitTests
 
         //almindelig theory as integrationtest
         // kan bruges til TDD spørgsmål, med implementering
-        [Theory, MemberData(nameof(GetGpsDTOs))]
-        public void GpsRepository_Implemented_GetGpsByTruckId_ValidID_Should_return_true(Gps gpsDTO)
-        {
-            //Arrange
-            //setup context
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseInMemoryDatabase("Server=(localdb)\\mssqllocaldb;Database=SemesterProject_Microservice;Trusted_Connection=True;MultipleActiveResultSets=true");
-            var _dbContext = new ApplicationDbContext(optionsBuilder.Options);
+        //[Theory, MemberData(nameof(GetGpsDTOs))]
+        //public void GpsRepository_Implemented_GetGpsByTruckId_ValidID_Should_return_true(Gps gpsDTO)
+        //{
+        //    //Arrange
+        //    //setup context
+        //    var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+        //    optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SemesterProject_Microservice;Trusted_Connection=True;MultipleActiveResultSets=true");
+        //    var _dbContext = new ApplicationDbContext(optionsBuilder.Options);
 
-            GpsRepository gpsRepository = new(_dbContext);
+        //    GpsRepository gpsRepository = new(_dbContext);
 
-            //Act
-            var result = gpsRepository.GetGpsByTruckId(gpsDTO.Id);
+        //    //Act
+        //    var result = gpsRepository.GetGpsByTruckId(gpsDTO.Id);
 
-            //Assert
-            result.Should().BeEquivalentTo(gpsDTO, options => options.Including(i => i.Id).Including(c => c.Coordinates));
-        }
+        //    //Assert
+        //    result.Should().BeEquivalentTo(gpsDTO, options => options.Including(i => i.Id).Including(c => c.Coordinates));
+        //}
 
         //[Fact]
         //public void GpsRepository_FakeDbSet_GetGpsByTruckId_ValidID_Should_return_true()
