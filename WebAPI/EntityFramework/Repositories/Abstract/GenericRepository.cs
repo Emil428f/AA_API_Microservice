@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebAPI.Data;
 using WebAPI.EntityFramework.Context;
+using WebAPI.Interfaces;
 using WebAPI.Interfaces.Base;
 
 namespace WebAPI.EntityFramework.Repositories.Abstract

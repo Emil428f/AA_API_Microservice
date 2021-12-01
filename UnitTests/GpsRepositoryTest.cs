@@ -8,6 +8,7 @@ using WebAPI.EntityFramework.Repositories;
 using WebAPI.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests
 {
@@ -64,6 +65,10 @@ namespace UnitTests
             result.Should().NotBeEquivalentTo(expectedGpsMock.Object, options => options.Including(i => i.Id).Including(c => c.Coordinates));
         }
 
+        //fact almindelig TDD test efter vi implementerede methoden
+
+
+
         //theory using memberdata(field-data, method-data)
         // kan bruges til DDT spørgsmål
         [Theory,
@@ -105,10 +110,33 @@ namespace UnitTests
 
             //Assert
             result.Should().BeEquivalentTo(gpsDTO, options => options.Including(i => i.Id).Including(c => c.Coordinates));
-
-
-            //context.Se
         }
+
+        //[Fact]
+        //public void GpsRepository_FakeDbSet_GetGpsByTruckId_ValidID_Should_return_true()
+        //{
+        //    //Arrange
+        //    //setup context
+        //    GpsContext context = new GpsContext();
+
+        //    context.Gps = GetQueryableMockDbSet(
+        //        new Gps { Id = 1, Coordinates = "10:10" },
+        //        new Gps { Id = 2, Coordinates = "10:11" },
+        //        new Gps { Id = 3, Coordinates = "10:12" }
+        //    );
+        //    Gps expectedGps = context.Gps.FirstOrDefault(x => x.Id == 1);
+        //    GpsRepository gpsRepository = new(context);
+
+
+
+        //    ////Act
+        //    var result = gpsRepository.GetGpsByTruckId(1);
+
+        //    ////Assert
+        //    result.Should().BeEquivalentTo(expectedGps, options => options.Including(i => i.Id).Including(c => c.Coordinates));
+        //}
+
+
 
         public static IEnumerable<object[]> GetGpsDTOs()
         {
@@ -160,6 +188,19 @@ namespace UnitTests
                     Coordinates = "43:10"
                 }
             };
+        }
+
+        private static DbSet<T> GetQueryableMockDbSet<T>(params T[] sourceList) where T : class
+        {
+            var queryable = sourceList.AsQueryable();
+
+            var dbSet = new Mock<DbSet<T>>();
+            dbSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryable.Provider);
+            dbSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryable.Expression);
+            dbSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
+            dbSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => queryable.GetEnumerator());
+
+            return dbSet.Object;
         }
     }
 }
