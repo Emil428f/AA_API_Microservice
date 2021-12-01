@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebAPI.Interfaces;
 using WebAPI.Models;
 
 namespace WebAPI.EntityFramework.Context
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext, IDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Gps> Gps { get; set; }
+        public virtual DbSet<Gps> Gps { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -17,6 +18,8 @@ namespace WebAPI.EntityFramework.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            //modelBuilder.Entity<Gps>().ToTable("Gps");
         }
+
     }
 }

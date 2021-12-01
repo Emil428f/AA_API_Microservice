@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using WebAPI.EntityFramework.Context;
 using WebAPI.EntityFramework.Repositories.Abstract;
@@ -16,9 +17,10 @@ namespace WebAPI.EntityFramework.Repositories
 
         public GpsRepository(ApplicationDbContext context) :base(context) {}
 
-        public Gps GetGpsByTruckId(int id)
+        public IGps GetGpsByTruckId(int id)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
+            return _databaseContext.Gps.FirstOrDefault(x => x.Id == id);
         }
 
         //public IEnumerable<Gps> GetGpsByTrailerId()
