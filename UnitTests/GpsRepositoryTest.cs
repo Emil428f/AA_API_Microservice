@@ -4,13 +4,17 @@ using System;
 using Xunit;
 using WebAPI.Interfaces;
 using WebAPI.Models;
+using WebAPI.EntityFramework.Repositories;
+using WebAPI.EntityFramework.Context;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
     public class GpsRepositoryTest
     {
-        public Mock<IGps> expectedGpsMock = new Mock<IGps>();
-        public Mock<IGpsRepository> gpsRepoMock = new Mock<IGpsRepository>();
+        public Mock<IGps> expectedGpsMock = new();
+        public Mock<IGpsRepository> gpsRepoMock = new();
 
         public GpsRepositoryTest()
         {
@@ -62,9 +66,100 @@ namespace UnitTests
 
         //theory using memberdata(field-data, method-data)
         // kan bruges til DDT spørgsmål
+        [Theory,
+         InlineData(1, "50;30"),
+         InlineData(2, "30;50"),
+         InlineData(3, "40;20"),
+         InlineData(4, "50;10"),
+         InlineData(5, "20;40"),]
+        public void GpsRepositoryTest_Mock_GetGpsByTruckId_ValidID_DDT_Should_Return_True(int id, string coordinates)
+        {
+            //Arrange
+            expectedGpsMock.SetupGet(mock => mock.Id).Returns(id);
+            expectedGpsMock.SetupGet(mock => mock.Coordinates).Returns(coordinates);
 
+            gpsRepoMock.Setup(repo => repo.GetGpsByTruckId(id)).Returns(new Gps() { Id = id, Coordinates = coordinates });
 
-        //almindelig Fact
+            //act
+            IGps result = gpsRepoMock.Object.GetGpsByTruckId(id);
+
+            //Assert
+            result.Should().BeEquivalentTo(expectedGpsMock.Object, options => options.Including(i => i.Id).Including(c => c.Coordinates));
+        }
+
+        //almindelig theory as integrationtest
         // kan bruges til TDD spørgsmål, med implementering
+        [Theory, MemberData(nameof(GetGpsDTOs))]
+        public void GpsRepository_Implemented_GetGpsByTruckId_ValidID_Should_return_true(Gps gpsDTO)
+        {
+            //Arrange
+            //setup context
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SemesterProject_Microservice;Trusted_Connection=True;MultipleActiveResultSets=true");
+            var _dbContext = new ApplicationDbContext(optionsBuilder.Options);
+
+            GpsRepository gpsRepository = new(_dbContext);
+
+            //Act
+            var result = gpsRepository.GetGpsByTruckId(gpsDTO.Id);
+
+            //Assert
+            result.Should().BeEquivalentTo(gpsDTO, options => options.Including(i => i.Id).Including(c => c.Coordinates));
+
+
+            //context.Se
+        }
+
+        public static IEnumerable<object[]> GetGpsDTOs()
+        {
+            yield return new object[]
+            {
+                new Gps
+                {
+                    Id = 1,
+                    Coordinates = "67:15"
+                }
+            };
+            yield return new object[]
+            {
+                new Gps
+                {
+                    Id = 2,
+                    Coordinates = "39:96"
+                }
+            };
+            yield return new object[]
+            {
+                new Gps
+                {
+                    Id = 3,
+                    Coordinates = "8:48"
+                }
+            };
+            yield return new object[]
+            {
+                new Gps
+                {
+                    Id = 10,
+                    Coordinates = "66:99"
+                }
+            };
+            yield return new object[]
+            {
+                new Gps
+                {
+                    Id = 16,
+                    Coordinates = "35:22"
+                }
+            };
+            yield return new object[]
+            {
+                new Gps
+                {
+                    Id = 190,
+                    Coordinates = "43:10"
+                }
+            };
+        }
     }
 }

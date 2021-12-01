@@ -10,6 +10,7 @@ using WebAPI.EntityFramework.Context;
 using WebAPI.EntityFramework.Repositories;
 using System.Net;
 using WebAPI.Controllers;
+using WebAPI.Interfaces;
 
 namespace WebAPI
 {
@@ -41,6 +42,7 @@ namespace WebAPI
             //    options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
             //    options.HttpsPort = 5001;
             //});
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AA_Microservice", Version = "v1" });

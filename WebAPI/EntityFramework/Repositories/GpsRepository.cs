@@ -18,7 +18,8 @@ namespace WebAPI.EntityFramework.Repositories
 
         public IGps GetGpsByTruckId(int id)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
+            return _databaseContext.Gps.FirstOrDefault(x => x.Id == id);
         }
 
         //public IEnumerable<Gps> GetGpsByTrailerId()

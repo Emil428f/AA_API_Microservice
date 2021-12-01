@@ -15,7 +15,7 @@ namespace WebAPI.EntityFramework.Repositories.Abstract
         public GenericRepository(ApplicationDbContext context)
         {
             this._databaseContext = context;
-            DBInitializer init = new DBInitializer();
+            DBInitializer init = new ();
             //this._dbSet = _databaseContext.Set<TModel>();
             init.Initialize(this._databaseContext);
         }
