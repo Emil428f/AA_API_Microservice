@@ -13,7 +13,7 @@ using WebAPI.Controllers;
 using WebAPI.Controllers.Base;
 using WebAPI.EntityFramework.Repositories.Abstract;
 
-namespace UnitTests
+namespace Tests.UnitTest
 {
     public class GpsRepositoryTest
     {
