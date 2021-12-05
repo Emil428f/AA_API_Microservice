@@ -8,24 +8,14 @@ using WebAPI.Models;
 
 namespace WebAPI.EntityFramework.Repositories
 {
-    public class GpsRepository : GenericRepository<Gps>, IGpsRepository
+    public class GpsRepository : GenericRepository<IGps>, IGpsRepository
     {
-        public ApplicationDbContext ApplicationDbContext
-        { 
-            get { return _databaseContext as ApplicationDbContext; }
-        }
-
         public GpsRepository(ApplicationDbContext context) :base(context) {}
 
         public IGps GetGpsByTruckId(int id)
         {
-            //throw new System.NotImplementedException();
             return _databaseContext.Gps.FirstOrDefault(x => x.Id == id);
         }
-
-        //public IEnumerable<Gps> GetGpsByTrailerId()
-        //{
-        //    throw new System.NotImplementedException();
-        //}
     }
+            //throw new System.NotImplementedException();
 }

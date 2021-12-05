@@ -9,6 +9,9 @@ using WebAPI.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using WebAPI.Controllers;
+using WebAPI.Controllers.Base;
+using WebAPI.EntityFramework.Repositories.Abstract;
 
 namespace UnitTests
 {
@@ -38,7 +41,6 @@ namespace UnitTests
             //arrange
             expectedGpsMock.SetupGet(mock => mock.Id).Returns(1);
             expectedGpsMock.SetupGet(mock => mock.Coordinates).Returns("50;30");
-
             gpsRepoMock.Setup(repo => repo.GetGpsByTruckId(1)).Returns(new Gps() { Id = 1, Coordinates = "50;30" });
 
             //act
@@ -55,7 +57,6 @@ namespace UnitTests
             //arrange
             expectedGpsMock.SetupGet(mock => mock.Id).Returns(1);
             expectedGpsMock.SetupGet(mock => mock.Coordinates).Returns("50;30");
-
             gpsRepoMock.Setup(repo => repo.GetGpsByTruckId(1)).Returns(new Gps() { Id = 1, Coordinates = "50;35" });
 
             //act
@@ -82,7 +83,6 @@ namespace UnitTests
             //Arrange
             expectedGpsMock.SetupGet(mock => mock.Id).Returns(id);
             expectedGpsMock.SetupGet(mock => mock.Coordinates).Returns(coordinates);
-
             gpsRepoMock.Setup(repo => repo.GetGpsByTruckId(id)).Returns(new Gps() { Id = id, Coordinates = coordinates });
 
             //act
@@ -92,25 +92,46 @@ namespace UnitTests
             result.Should().BeEquivalentTo(expectedGpsMock.Object, options => options.Including(i => i.Id).Including(c => c.Coordinates));
         }
 
+        [Fact]
+        public void GpsRepository_Implemented_integration_GetGpsByTruckId_ValidID_Should_return_true()
+        {
+            //Arrange
+            //setup context
+            expectedGpsMock.SetupGet(mock => mock.Id).Returns(1);
+            expectedGpsMock.SetupGet(mock => mock.Coordinates).Returns("67:15");
+
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SemesterProject_Microservice;Trusted_Connection=True;MultipleActiveResultSets=true");
+            var _dbContext = new ApplicationDbContext(optionsBuilder.Options);
+
+            GpsRepository gpsRepository = new(_dbContext);
+
+            //Act
+            var result = gpsRepository.GetGpsByTruckId(expectedGpsMock.Object.Id);
+
+            //Assert
+            result.Should().BeEquivalentTo(expectedGpsMock.Object, options => options.Including(i => i.Id).Including(c => c.Coordinates));
+        }
+
         //almindelig theory as integrationtest
         // kan bruges til TDD spørgsmål, med implementering
-        //[Theory, MemberData(nameof(GetGpsDTOs))]
-        //public void GpsRepository_Implemented_GetGpsByTruckId_ValidID_Should_return_true(Gps gpsDTO)
-        //{
-        //    //Arrange
-        //    //setup context
-        //    var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        //    optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SemesterProject_Microservice;Trusted_Connection=True;MultipleActiveResultSets=true");
-        //    var _dbContext = new ApplicationDbContext(optionsBuilder.Options);
+        [Theory, MemberData(nameof(GetGpsDTOs))]
+        public void GpsRepository_Implemented_GetGpsByTruckId_ValidID_Should_return_true(Gps gpsDTO)
+        {
+            //Arrange
+            //setup context
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SemesterProject_Microservice;Trusted_Connection=True;MultipleActiveResultSets=true");
+            var _dbContext = new ApplicationDbContext(optionsBuilder.Options);
 
-        //    GpsRepository gpsRepository = new(_dbContext);
+            GpsRepository gpsRepository = new(_dbContext);
 
-        //    //Act
-        //    var result = gpsRepository.GetGpsByTruckId(gpsDTO.Id);
+            //Act
+            var result = gpsRepository.GetGpsByTruckId(gpsDTO.Id);
 
-        //    //Assert
-        //    result.Should().BeEquivalentTo(gpsDTO, options => options.Including(i => i.Id).Including(c => c.Coordinates));
-        //}
+            //Assert
+            result.Should().BeEquivalentTo(gpsDTO, options => options.Including(i => i.Id).Including(c => c.Coordinates));
+        }
 
         //[Fact]
         //public void GpsRepository_FakeDbSet_GetGpsByTruckId_ValidID_Should_return_true()
@@ -127,15 +148,42 @@ namespace UnitTests
         //    Gps expectedGps = context.Gps.FirstOrDefault(x => x.Id == 1);
         //    GpsRepository gpsRepository = new(context);
 
-
-
         //    ////Act
         //    var result = gpsRepository.GetGpsByTruckId(1);
 
         //    ////Assert
         //    result.Should().BeEquivalentTo(expectedGps, options => options.Including(i => i.Id).Including(c => c.Coordinates));
+
+        //    Assert.Equal(result.Id, expectedGps.Id);
+        //    Assert.Equal(result.Coordinates, expectedGps.Coordinates);
         //}
 
+        [Fact]
+        public void GpsController_Should_be_assignable_to_ParentController()
+        {
+
+            GpsController gpsController = new GpsController(gpsRepoMock.Object);
+            gpsController.Should().BeAssignableTo(typeof(ParentController<IGps, IGpsRepository>));
+        }
+
+        [Fact]
+        public void Gps_Should_be_assignable_to_IGps()
+        {
+            Gps gps = new();
+            gps.Should().BeAssignableTo(typeof(IGps));
+        }
+
+        [Fact]
+        public void GpsRepository_Should_be_assignable_to_GenericRepository()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=SemesterProject_Microservice;Trusted_Connection=True;MultipleActiveResultSets=true");
+            var _dbContext = new ApplicationDbContext(optionsBuilder.Options);
+
+            GpsRepository gpsRepository = new(_dbContext);
+            //GpsController gpsController = new GpsController(gpsRepoMock.Object);
+            gpsRepository.Should().BeAssignableTo(typeof(GenericRepository<IGps>));
+        }
 
 
         public static IEnumerable<object[]> GetGpsDTOs()
